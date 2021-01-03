@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar, Nav, Button, Image } from "react-bootstrap";
+import { Navbar, Nav, Image } from "react-bootstrap";
 import logo from "../../images/Netflix-Logo.png";
 import avatar from "../../images/Netflix-avatar.png";
 import SearchIcon from "@material-ui/icons/Search";
