@@ -1,50 +1,49 @@
 import React from "react";
-import useForm from "../../useForm";
-import validate from "../../validateForm";
+import { useForm } from "react-hook-form";
 import "./AddMovie.css";
 
 const AddMovie = () => {
-  const { handleChange, handleSubmit, values, errors } = useForm(validate);
+  // SETTING HOOKS
+  const { register, handleSubmit, errors } = useForm();
+  //
+  const onSubmit = (data) => console.log(data);
   //
   return (
     <div id="add-movie">
       {/* wrapping onSubmit function in handleSubmit then passing it as callback, and i get all data from the form */}
-      <form id="form" onSubmit={handleSubmit}>
+      <form id="form" onSubmit={handleSubmit(onSubmit)}>
         <h1>Add a new Movie!</h1>
         <input
-          value={values.title}
-          onChange={handleChange}
+          ref={register({ required: true })}
           type="text"
           name="title"
           className="form-input"
           placeholder="Name of the movie"
         />
-        {errors.title && <p style={{ color: "red" }}>{errors.title}</p>}
+        {errors.title && (
+          <span style={{ color: "red" }}>Title is required</span>
+        )}
         <input
-          value={values.year}
-          onChange={handleChange}
-          type="text"
+          ref={register({ required: true, min: 4 })}
+          type="number"
           name="year"
           className="form-input"
           placeholder="Year of release"
         />
-        {errors.year && <p style={{ color: "red" }}>{errors.year}</p>}
+        {errors.year && <span style={{ color: "red" }}>Year is required</span>}
+
         <input
-          value={values.type}
-          onChange={handleChange}
+          ref={register({ required: true })}
           type="text"
           name="type"
           className="form-input"
           placeholder="exampe: movie, tv show, ...."
         />
-        {errors.type && <p style={{ color: "red" }}>{errors.type}</p>}
-        <input
-          value={values.image}
-          onChange={handleChange}
-          type="file"
-          name="image"
-        />
-        {errors.image && <p style={{ color: "red" }}>{errors.image}</p>}
+        {errors.type && <span style={{ color: "red" }}>Type is required</span>}
+        <input ref={register({ required: true })} type="file" name="image" />
+        {errors.image && (
+          <span style={{ color: "red" }}>Image is required</span>
+        )}
         <input type="submit" />
       </form>
     </div>
