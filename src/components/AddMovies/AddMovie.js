@@ -1,12 +1,40 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import "./AddMovie.css";
 
 const AddMovie = () => {
-  // SETTING HOOKS
+  // FORM HOOKS
   const { register, handleSubmit, errors } = useForm();
+
+  // MOVIES HOOKS
+  const [dataMovies, setdataMovies] = useState({});
+
+  useEffect(() => {
+    postMovie();
+  }, []);
+  // POST MOVIE
+  const postMovie = async (body) => {
+    try {
+      const response = await fetch("/movies/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(),
+      });
+      const data = await response.json(body);
+
+      if (response.ok) {
+        setdataMovies(data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   //
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data, e) => {
+    // e.preventDefault();
+    postMovie(data);
+  };
   //
   return (
     <div id="add-movie">
