@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import "./AddMovie.css";
 
@@ -9,21 +9,18 @@ const AddMovie = () => {
   // MOVIES HOOKS
   const [dataMovies, setdataMovies] = useState({});
 
-  useEffect(() => {
-    postMovie();
-  }, []);
-  // POST MOVIE
+  // POST MOVIE // NEED TO PASS THE BODY IN POST METHOD TO SEND DATA
   const postMovie = async (body) => {
+    console.log("sending data..");
     try {
       const response = await fetch("/movies/upload", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(),
+        body: body, // SENDING THE BODY/DATA
       });
-      const data = await response.json(body);
-
+      const dataJson = await response.json(body);
+      console.log(dataJson);
       if (response.ok) {
-        setdataMovies(data);
+        return setdataMovies(dataJson);
       }
     } catch (error) {
       console.log(error);
@@ -32,7 +29,9 @@ const AddMovie = () => {
 
   //
   const onSubmit = (data, e) => {
-    // e.preventDefault();
+    alert("Movie successfully uploaded!");
+    console.log(data);
+    data = new FormData(e.target); // NEEDS THE E.TARGET TO WORK
     postMovie(data);
   };
   //
@@ -68,7 +67,12 @@ const AddMovie = () => {
           placeholder="exampe: movie, tv show, ...."
         />
         {errors.type && <span style={{ color: "red" }}>Type is required</span>}
-        <input ref={register({ required: true })} type="file" name="image" />
+        <input
+          id="file-input"
+          ref={register({ required: true })}
+          type="file"
+          name="image"
+        />
         {errors.image && (
           <span style={{ color: "red" }}>Image is required</span>
         )}
